@@ -1,0 +1,11 @@
+
+# /NETKit.xcodeproj/
+/NETKit.xcodeproj/*.pbxuser
+/NETKit.xcodeproj/*.mode1v3
+/NETKit.xcodeproj/*.perspectivev3
+
+# /NETKit.xcodeproj/project.xcworkspace/xcuserdata/
+/NETKit.xcodeproj/project.xcworkspace/xcuserdata/*
+
+# /NETKit.xcodeproj/xcuserdata/
+/NETKit.xcodeproj/xcuserdata/*

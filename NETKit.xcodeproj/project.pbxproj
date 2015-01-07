@@ -7,9 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		BBD56F661A5D7A190085D259 /* NETKit.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = BBD56F651A5D7A190085D259 /* NETKit.h */; };
-		BBD56F681A5D7A190085D259 /* NETKit.m in Sources */ = {isa = PBXBuildFile; fileRef = BBD56F671A5D7A190085D259 /* NETKit.m */; };
 		BBD56F6E1A5D7A190085D259 /* libNETKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BBD56F621A5D7A190085D259 /* libNETKit.a */; };
+		BBD56F861A5D7A680085D259 /* NETImageMimePart.m in Sources */ = {isa = PBXBuildFile; fileRef = BBD56F7D1A5D7A680085D259 /* NETImageMimePart.m */; };
+		BBD56F871A5D7A680085D259 /* NETImageMimePart.m in Sources */ = {isa = PBXBuildFile; fileRef = BBD56F7D1A5D7A680085D259 /* NETImageMimePart.m */; };
+		BBD56F881A5D7A680085D259 /* NETJSONMimePart.m in Sources */ = {isa = PBXBuildFile; fileRef = BBD56F7F1A5D7A680085D259 /* NETJSONMimePart.m */; };
+		BBD56F891A5D7A680085D259 /* NETJSONMimePart.m in Sources */ = {isa = PBXBuildFile; fileRef = BBD56F7F1A5D7A680085D259 /* NETJSONMimePart.m */; };
+		BBD56F8A1A5D7A680085D259 /* NETMimeMultipart.m in Sources */ = {isa = PBXBuildFile; fileRef = BBD56F811A5D7A680085D259 /* NETMimeMultipart.m */; };
+		BBD56F8B1A5D7A680085D259 /* NETMimeMultipart.m in Sources */ = {isa = PBXBuildFile; fileRef = BBD56F811A5D7A680085D259 /* NETMimeMultipart.m */; };
+		BBD56F8C1A5D7A680085D259 /* NETMimePart.m in Sources */ = {isa = PBXBuildFile; fileRef = BBD56F831A5D7A680085D259 /* NETMimePart.m */; };
+		BBD56F8D1A5D7A680085D259 /* NETMimePart.m in Sources */ = {isa = PBXBuildFile; fileRef = BBD56F831A5D7A680085D259 /* NETMimePart.m */; };
+		BBD56F8E1A5D7A680085D259 /* NETRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = BBD56F851A5D7A680085D259 /* NETRequest.m */; };
+		BBD56F8F1A5D7A680085D259 /* NETRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = BBD56F851A5D7A680085D259 /* NETRequest.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,7 +37,6 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
-				BBD56F661A5D7A190085D259 /* NETKit.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -37,10 +44,18 @@
 
 /* Begin PBXFileReference section */
 		BBD56F621A5D7A190085D259 /* libNETKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libNETKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		BBD56F651A5D7A190085D259 /* NETKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NETKit.h; sourceTree = "<group>"; };
-		BBD56F671A5D7A190085D259 /* NETKit.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NETKit.m; sourceTree = "<group>"; };
 		BBD56F6D1A5D7A190085D259 /* NETKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NETKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BBD56F731A5D7A190085D259 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BBD56F7C1A5D7A680085D259 /* NETImageMimePart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NETImageMimePart.h; path = Sources/NETImageMimePart.h; sourceTree = SOURCE_ROOT; };
+		BBD56F7D1A5D7A680085D259 /* NETImageMimePart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NETImageMimePart.m; path = Sources/NETImageMimePart.m; sourceTree = SOURCE_ROOT; };
+		BBD56F7E1A5D7A680085D259 /* NETJSONMimePart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NETJSONMimePart.h; path = Sources/NETJSONMimePart.h; sourceTree = SOURCE_ROOT; };
+		BBD56F7F1A5D7A680085D259 /* NETJSONMimePart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NETJSONMimePart.m; path = Sources/NETJSONMimePart.m; sourceTree = SOURCE_ROOT; };
+		BBD56F801A5D7A680085D259 /* NETMimeMultipart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NETMimeMultipart.h; path = Sources/NETMimeMultipart.h; sourceTree = SOURCE_ROOT; };
+		BBD56F811A5D7A680085D259 /* NETMimeMultipart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NETMimeMultipart.m; path = Sources/NETMimeMultipart.m; sourceTree = SOURCE_ROOT; };
+		BBD56F821A5D7A680085D259 /* NETMimePart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NETMimePart.h; path = Sources/NETMimePart.h; sourceTree = SOURCE_ROOT; };
+		BBD56F831A5D7A680085D259 /* NETMimePart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NETMimePart.m; path = Sources/NETMimePart.m; sourceTree = SOURCE_ROOT; };
+		BBD56F841A5D7A680085D259 /* NETRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NETRequest.h; path = Sources/NETRequest.h; sourceTree = SOURCE_ROOT; };
+		BBD56F851A5D7A680085D259 /* NETRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NETRequest.m; path = Sources/NETRequest.m; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,8 +98,16 @@
 		BBD56F641A5D7A190085D259 /* NETKit */ = {
 			isa = PBXGroup;
 			children = (
-				BBD56F651A5D7A190085D259 /* NETKit.h */,
-				BBD56F671A5D7A190085D259 /* NETKit.m */,
+				BBD56F7C1A5D7A680085D259 /* NETImageMimePart.h */,
+				BBD56F7D1A5D7A680085D259 /* NETImageMimePart.m */,
+				BBD56F7E1A5D7A680085D259 /* NETJSONMimePart.h */,
+				BBD56F7F1A5D7A680085D259 /* NETJSONMimePart.m */,
+				BBD56F801A5D7A680085D259 /* NETMimeMultipart.h */,
+				BBD56F811A5D7A680085D259 /* NETMimeMultipart.m */,
+				BBD56F821A5D7A680085D259 /* NETMimePart.h */,
+				BBD56F831A5D7A680085D259 /* NETMimePart.m */,
+				BBD56F841A5D7A680085D259 /* NETRequest.h */,
+				BBD56F851A5D7A680085D259 /* NETRequest.m */,
 			);
 			path = NETKit;
 			sourceTree = "<group>";
@@ -193,7 +216,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BBD56F681A5D7A190085D259 /* NETKit.m in Sources */,
+				BBD56F8C1A5D7A680085D259 /* NETMimePart.m in Sources */,
+				BBD56F861A5D7A680085D259 /* NETImageMimePart.m in Sources */,
+				BBD56F881A5D7A680085D259 /* NETJSONMimePart.m in Sources */,
+				BBD56F8E1A5D7A680085D259 /* NETRequest.m in Sources */,
+				BBD56F8A1A5D7A680085D259 /* NETMimeMultipart.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -201,6 +228,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BBD56F891A5D7A680085D259 /* NETJSONMimePart.m in Sources */,
+				BBD56F871A5D7A680085D259 /* NETImageMimePart.m in Sources */,
+				BBD56F8D1A5D7A680085D259 /* NETMimePart.m in Sources */,
+				BBD56F8F1A5D7A680085D259 /* NETRequest.m in Sources */,
+				BBD56F8B1A5D7A680085D259 /* NETMimeMultipart.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
