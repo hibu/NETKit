@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 hibu. All rights reserved.
 //
 
+#import <TargetConditionals.h>
 #if TARGET_OS_IPHONE | TARGET_OS_SIMULATOR
 @import UIKit;
 #else
