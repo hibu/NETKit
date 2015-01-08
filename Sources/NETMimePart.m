@@ -7,6 +7,8 @@
 //
 
 #import "NETMimePart.h"
+#import "NETJSONMimePart.h"
+#import "NETImageMimePart.h"
 
 #import <objc/runtime.h>
 
@@ -28,7 +30,7 @@
 - (void)partDataRepresentationCompletion:(void(^)(NSData*))completion {}
 
 + (NSArray*)subclasses {
-    return @[@"NETJSONMimePart", @"NETImageMimePart"];
+    return @[NETJSONMimePart.class, NETImageMimePart.class];
 }
 
 + (NSArray*)mimeTypes {

@@ -360,8 +360,7 @@ NSString * const NETRequestDidEndNotification = @"NETRequestDidEndNotification";
         return [[NSString alloc] initWithData:data encoding:encoding];
     }
     
-    for (NSString *className in NETMimePart.subclasses) {
-        Class class = NSClassFromString(className);
+    for (Class class in NETMimePart.subclasses) {
         
         for (NSString *mimeType in [class mimeTypes]) {
             if ([mimeType isEqualToString:type]) {
