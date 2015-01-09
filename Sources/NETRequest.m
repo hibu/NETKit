@@ -269,6 +269,10 @@ NSString * const NETRequestDidEndNotification = @"NETRequestDidEndNotification";
 
 - (void)completeWithObject:(id)object response:(NSHTTPURLResponse*)response error:(NSError*)error completion:(void(^)(id object, NSHTTPURLResponse *response, NSError *error))completion {
     
+    if ([self.intent.provider respondsToSelector:@selector(receivedObject:response:error:intent:)]) {
+        [self.intent.provider receivedObject:&object response:&response error:&error intent:self.intent];
+    }
+    
     if ([NSThread mainThread]) {
         if (self.completesOnBackgroundThread) {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
