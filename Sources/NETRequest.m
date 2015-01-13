@@ -54,6 +54,9 @@ NSString * const NETRequestDidEndNotification = @"NETRequestDidEndNotification";
         @synchronized(self.class) {
             _uid = ++gUID;
         }
+#ifndef DEBUG
+        _quiet = YES;
+#endif
     }
     return self;
 }
@@ -92,7 +95,7 @@ NSString * const NETRequestDidEndNotification = @"NETRequestDidEndNotification";
 }
 
 - (void)setUrlString:(NSString *)urlString {
-    _builder = [NSURLComponents componentsWithString:urlString];
+    self.url = [NSURL URLWithString:urlString];
 }
 
 - (NSURL*)url {
@@ -183,12 +186,14 @@ NSString * const NETRequestDidEndNotification = @"NETRequestDidEndNotification";
                     
                     if (!self.isQuiet) {
                         NSString *description = self.intent ? self.intent.fullName : (self.session.sessionDescription ?: (self.session == [NSURLSession sharedSession] ? @"shared session" : @""));
-                        NSLog(@"");
-                        NSLog(@"****** %@ REQUEST #%ld %@ ******", self.method, (unsigned long)self.uid, description);
-                        NSLog(@"URL = %@", self.url);
-                        NSLog(@"Headers = %@", request.allHTTPHeaderFields);
-                        NSLog(@"****** \\REQUEST #%ld ******", (unsigned long)self.uid);
-                        NSLog(@"");
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            NSLog(@"\n");
+                            NSLog(@"****** %@ REQUEST #%ld %@ ******", self.method, (unsigned long)self.uid, description);
+                            NSLog(@"URL = %@", self.url);
+                            NSLog(@"Headers = %@", request.allHTTPHeaderFields);
+                            NSLog(@"****** \\REQUEST #%ld ******", (unsigned long)self.uid);
+                            NSLog(@"\n");
+                        });
                     }
                     
                     if (self.intent && [self.intent.provider respondsToSelector:@selector(configureURLRequest:intent:flags:)]) {
@@ -219,13 +224,13 @@ NSString * const NETRequestDidEndNotification = @"NETRequestDidEndNotification";
                             
                             if (!self.isQuiet) {
                                 dispatch_async(dispatch_get_main_queue(), ^{
-                                    NSLog(@"");
+                                    NSLog(@"\n");
                                     NSLog(@"****** RESPONSE #%ld ******", (unsigned long)self.uid);
                                     NSLog(@"URL = %@", self.url);
                                     NSLog(@"Headers = %@", httpResponse.allHeaderFields);
                                     NSLog(@"Body = %@", result);
                                     NSLog(@"****** \\RESPONSE #%ld ******", (unsigned long)self.uid);
-                                    NSLog(@"");
+                                    NSLog(@"\n");
                                 });
                             }
                             
