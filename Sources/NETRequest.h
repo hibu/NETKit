@@ -68,15 +68,16 @@ extern NSString * const NETRequestDidEndNotification;
 
 // Called after the -startRequestWithCompletion: method is called.
 // Will be called on a background thread
-- (void)configureRequest:(NETRequest*)request
+- (NSError*)configureRequest:(NETRequest*)request
                   intent:(NETIntent*)intent
                    flags:(NSDictionary*)flags;
 
 // Called after the -startRequestWithCompletion: method is called.
 // Will be called on a background thread, just before creating the data task. This is the place to add security headers or parameters.
-- (void)configureURLRequest:(NSMutableURLRequest *)request
+- (NSError*)configureURLRequest:(NSMutableURLRequest *)request
                      intent:(NETIntent*)intent
-                      flags:(NSDictionary*)flags;
+                      flags:(NSDictionary*)flags
+                    request:(NETRequest*)netRequest;
 
 // Use this control point if you want to enqueue or pause requests.
 // Execute the block on any thread to resume the request. The optional completionBlk you pass in will get executed on a background queue
