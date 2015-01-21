@@ -174,8 +174,6 @@ NSString * const NETRequestDidEndNotification = @"NETRequestDidEndNotification";
             
             self.executing = YES;
             
-            [[NSNotificationCenter defaultCenter] postNotificationName:NETRequestDidStartNotification object:self];
-        
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                 
                 if (self.intent && [self.intent.provider respondsToSelector:@selector(configureRequest:intent:flags:)]) {
@@ -208,7 +206,15 @@ NSString * const NETRequestDidEndNotification = @"NETRequestDidEndNotification";
                         });
                     }
                     
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [[NSNotificationCenter defaultCenter] postNotificationName:NETRequestDidStartNotification object:self];
+                    });
+                    
                     self.dataTask = [self.session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+                        
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [[NSNotificationCenter defaultCenter] postNotificationName:NETRequestDidEndNotification object:self];
+                        });
                         
                         NSHTTPURLResponse *httpResponse = (id)response;
                         
@@ -290,24 +296,16 @@ NSString * const NETRequestDidEndNotification = @"NETRequestDidEndNotification";
         if (self.completesOnBackgroundThread) {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                 completion(object, response, error);
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [[NSNotificationCenter defaultCenter] postNotificationName:NETRequestDidEndNotification object:self];
-                });
             });
         } else {
             completion(object, response, error);
-            [[NSNotificationCenter defaultCenter] postNotificationName:NETRequestDidEndNotification object:self];
         }
     } else {
         if (self.completesOnBackgroundThread) {
             completion(object, response, error);
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [[NSNotificationCenter defaultCenter] postNotificationName:NETRequestDidEndNotification object:self];
-            });
         } else {
             dispatch_async(dispatch_get_main_queue(), ^{
                 completion(object, response, error);
-                [[NSNotificationCenter defaultCenter] postNotificationName:NETRequestDidEndNotification object:self];
             });
         }
     }
