@@ -116,6 +116,7 @@ NSString * const NETRequestDidEndNotification = @"NETRequestDidEndNotification";
 - (void)addQueryEntriesFromDictionary:(NSDictionary*)parameters {
     NSMutableArray *mItems = [NSMutableArray new];
 
+    // NSURLQueryItem is new to iOS 8
     // iOS 8 ?
     if ([NSURLComponents respondsToSelector:@selector(queryItems)]) {
         [parameters enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {

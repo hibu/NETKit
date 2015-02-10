@@ -15,6 +15,25 @@
 extern NSString * const NETRequestDidStartNotification;
 extern NSString * const NETRequestDidEndNotification;
 
+/*
+ NETRequest is a wrapper around NSURLSession and its dataTasks. It makes things easy, while still providing access to the underliying
+ NSURL... objects. Typical use is as follow:
+ 
+ NETRequest *request = [NETRequest request];
+ request urlBuilder:^(NSURLComponents *builder) {
+    builder.path = @"/maps/api/geocode/json";
+    builder.host = @"maps.googleapis.com";
+    builder.port = 443;
+    builder.scheme = @"https";
+    builder.query = @{@"sensor" : @"true", @"latlng" : latlon};
+ };
+ request.headers = @{@"Accept" : @"application/json"};
+ 
+ [request startRequestWithCompletion:^(NSDictionary *json, NSHTTPURLResponse *response, NSError *error) {
+ 
+ }];
+ 
+*/
 @interface NETRequest : NSObject
 
 @property (nonatomic, readonly) NSURLSession *session;
@@ -88,6 +107,11 @@ extern NSString * const NETRequestDidEndNotification;
 
 @end
 
+
+/*
+ Intents (not a good name, sorry) are used to easily configure NETRequests for talking to a particular API.
+ Its delegate which conforms to the <NETIntentProviderProtocol> protocol provides a configured NSURLSession, and implements optionally some callbacks for late additions of parameters, security, ...
+*/
 @interface NETIntent : NSObject
 
 @property (nonatomic, copy, readonly) NSString *name;
