@@ -48,6 +48,7 @@ extern NSString * const NETRequestDidEndNotification;
 @property (nonatomic, readonly, getter=isCancelled) BOOL cancelled;
 @property (nonatomic, assign) BOOL completesOnBackgroundThread;
 @property (nonatomic, assign, getter=isQuiet) BOOL quiet;
+@property (nonatomic, assign) BOOL logRawResponseData;
 
 // create a request
 + (instancetype)request;

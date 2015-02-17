@@ -244,6 +244,14 @@ NSString * const NETRequestDidEndNotification = @"NETRequestDidEndNotification";
                                     NSLog(@"URL = %@", self.url);
                                     NSLog(@"Headers = %@", httpResponse.allHeaderFields);
                                     NSLog(@"Body = %@", result);
+                                    if (self.logRawResponseData) {
+                                        NSString *dataStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                                        if (dataStr) {
+                                            NSLog(@"Body (raw) = %@", dataStr);
+                                        } else {
+                                            NSLog(@"Body (raw) = %@", data);
+                                        }
+                                    }
                                     NSLog(@"****** \\RESPONSE #%ld ******", (unsigned long)self.uid);
                                     NSLog(@"\n");
                                 });
