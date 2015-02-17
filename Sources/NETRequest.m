@@ -57,6 +57,10 @@ NSString * const NETRequestDidEndNotification = @"NETRequestDidEndNotification";
 #ifndef DEBUG
         _quiet = YES;
 #endif
+
+#ifdef NETRequest_logRawResponseData
+        _logRawResponseData = YES;
+#endif
     }
     return self;
 }

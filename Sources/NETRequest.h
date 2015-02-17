@@ -10,6 +10,9 @@
 
 #import "NETMimePart.h"
 
+/* Uncomment the following define to log the raw response data in all NETRequests */
+//#define NETRequest_logRawResponseData 1
+
 @class NETIntent;
 
 extern NSString * const NETRequestDidStartNotification;
