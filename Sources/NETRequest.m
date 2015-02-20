@@ -122,7 +122,8 @@ NSString * const NETRequestDidEndNotification = @"NETRequestDidEndNotification";
 
     // NSURLQueryItem is new to iOS 8
     // iOS 8 ?
-    if ([NSURLComponents respondsToSelector:@selector(queryItems)]) {
+    if ([NSURLComponents instancesRespondToSelector:@selector(queryItems)]) {
+        if (self.builder.queryItems.count > 0) [mItems addObjectsFromArray:self.builder.queryItems];
         [parameters enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
             [self stringifyObject:obj usingBlock:^(NSString *value) {
                 [mItems addObject:[NSURLQueryItem queryItemWithName:key value:value]];
@@ -132,7 +133,11 @@ NSString * const NETRequestDidEndNotification = @"NETRequestDidEndNotification";
     } else { // iOS 7
         [parameters enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
             [self stringifyObject:obj usingBlock:^(NSString *value) {
-                [mItems addObject:@{key :value}];
+                #define kUnescapedCharacters CFSTR("￼=,!$&'()*+;@?\n\"<>#\t :/")
+                NSString *theKey = (__bridge_transfer NSString*)CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)key, NULL, kUnescapedCharacters,kCFStringEncodingUTF8);
+                NSString *theValue = (__bridge_transfer NSString*)CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)value, NULL, kUnescapedCharacters,kCFStringEncodingUTF8);
+                
+                [mItems addObject:@{ theKey : theValue }];
             }];
         }];
         
@@ -145,10 +150,10 @@ NSString * const NETRequestDidEndNotification = @"NETRequestDidEndNotification";
             [mString appendString:item[key]];
         }];
         
-        NSString *query = self.builder.query;
+        NSString *query = self.builder.percentEncodedQuery;
         if (query && query.length > 0) {
-            self.builder.query = [query stringByAppendingFormat:@"&%@", mString];
-        } else self.builder.query = mString;
+            self.builder.percentEncodedQuery = [query stringByAppendingFormat:@"&%@", mString];
+        } else self.builder.percentEncodedQuery = mString;
     }
 }
 
