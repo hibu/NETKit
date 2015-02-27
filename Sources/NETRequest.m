@@ -269,7 +269,7 @@ NSString * const NETRequestDidEndNotification = @"NETRequestDidEndNotification";
                             self.executing = NO;
                             self.dataTask = nil;
                             
-                            [self completeWithObject:result response:httpResponse error:error completion:completion];
+                            [self completeWithObject:result ?: data response:httpResponse error:error completion:completion];
                         });
                     }];
                     
@@ -306,24 +306,28 @@ NSString * const NETRequestDidEndNotification = @"NETRequestDidEndNotification";
 
 - (void)completeWithObject:(id)object response:(NSHTTPURLResponse*)response error:(NSError*)error completion:(void(^)(id object, NSHTTPURLResponse *response, NSError *error))completion {
     
+    id theObject = object;
+    NSHTTPURLResponse *theResponse = response;
+    NSError *theError = error;
+    
     if ([self.intent.provider respondsToSelector:@selector(receivedObject:response:error:intent:)]) {
-        [self.intent.provider receivedObject:&object response:&response error:&error intent:self.intent];
+        [self.intent.provider receivedObject:&theObject response:&theResponse error:&theError intent:self.intent];
     }
     
     if ([NSThread isMainThread]) {
         if (self.completesOnBackgroundThread) {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                completion(object, response, error);
+                completion(theObject, theResponse, theError);
             });
         } else {
-            completion(object, response, error);
+            completion(theObject, theResponse, theError);
         }
     } else {
         if (self.completesOnBackgroundThread) {
-            completion(object, response, error);
+            completion(theObject, theResponse, theError);
         } else {
             dispatch_async(dispatch_get_main_queue(), ^{
-                completion(object, response, error);
+                completion(theObject, theResponse, theError);
             });
         }
     }
