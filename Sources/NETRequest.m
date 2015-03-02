@@ -248,12 +248,14 @@ NSString * const NETRequestDidEndNotification = @"NETRequestDidEndNotification";
                             
                             if (!self.isQuiet) {
                                 dispatch_async(dispatch_get_main_queue(), ^{
+                                    BOOL logRaw = NO;
                                     NSLog(@"\n");
-                                    NSLog(@"****** RESPONSE #%ld ******", (unsigned long)self.uid);
+                                    NSLog(@"****** RESPONSE #%ld status: %ld ******", (unsigned long)self.uid, (long)httpResponse.statusCode);
                                     NSLog(@"URL = %@", self.url);
                                     NSLog(@"Headers = %@", httpResponse.allHeaderFields);
-                                    NSLog(@"Body = %@", result);
-                                    if (self.logRawResponseData) {
+                                    if (result) NSLog(@"Body = %@", result);
+                                    else logRaw = YES;
+                                    if ((self.logRawResponseData || logRaw) && data) {
                                         NSString *dataStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
                                         if (dataStr) {
                                             NSLog(@"Body (raw) = %@", dataStr);
