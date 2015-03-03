@@ -168,7 +168,7 @@ NSString * const NETRequestDidEndNotification = @"NETRequestDidEndNotification";
     
     if (self.executing) {
         NSError *error = [NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorUnknown userInfo:nil];
-        [self completeWithObject:nil response:nil error:error completion:completion];
+        [self completeWithObject:nil data:nil response:nil error:error completion:completion];
         return;
     }
     
@@ -178,7 +178,7 @@ NSString * const NETRequestDidEndNotification = @"NETRequestDidEndNotification";
             
             if (self.cancelled) {
                 NSError *error = [NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorCancelled userInfo:nil];
-                [self completeWithObject:nil response:nil error:error completion:completion];
+                [self completeWithObject:nil data:nil response:nil error:error completion:completion];
                 return;
             }
             
@@ -189,7 +189,7 @@ NSString * const NETRequestDidEndNotification = @"NETRequestDidEndNotification";
                 if (self.intent && [self.intent.provider respondsToSelector:@selector(configureRequest:intent:flags:)]) {
                     NSError *error = [self.intent.provider configureRequest:self intent:self.intent flags:self.intentFlags];
                     if (error) {
-                        [self completeWithObject:nil response:nil error:error completion:completion];
+                        [self completeWithObject:nil data:nil response:nil error:error completion:completion];
                         return;
                     }
                 }
@@ -199,7 +199,7 @@ NSString * const NETRequestDidEndNotification = @"NETRequestDidEndNotification";
                     if (self.intent && [self.intent.provider respondsToSelector:@selector(configureURLRequest:intent:flags:request:)]) {
                         NSError *error = [self.intent.provider configureURLRequest:request intent:self.intent flags:self.intentFlags request:self];
                         if (error) {
-                            [self completeWithObject:nil response:nil error:error completion:completion];
+                            [self completeWithObject:nil data:nil response:nil error:error completion:completion];
                             return;
                         }
                     }
@@ -234,7 +234,7 @@ NSString * const NETRequestDidEndNotification = @"NETRequestDidEndNotification";
                         
                         if (self.cancelled || self.dataTask.state == NSURLSessionTaskStateCanceling) {
                             NSError *cancelError = [NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorCancelled userInfo:nil];
-                            [self completeWithObject:nil response:nil error:cancelError completion:completion];
+                            [self completeWithObject:nil data:nil response:nil error:cancelError completion:completion];
                             return;
                         }
                         
@@ -271,13 +271,13 @@ NSString * const NETRequestDidEndNotification = @"NETRequestDidEndNotification";
                             self.executing = NO;
                             self.dataTask = nil;
                             
-                            [self completeWithObject:result ?: data response:httpResponse error:error completion:completion];
+                            [self completeWithObject:result data:data response:httpResponse error:error completion:completion];
                         });
                     }];
                     
                     if (!self.dataTask) {
                         NSError *cancelError = [NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorCancelled userInfo:nil];
-                        [self completeWithObject:nil response:nil error:cancelError completion:completion];
+                        [self completeWithObject:nil data:nil response:nil error:cancelError completion:completion];
                         return;
                     }
                     
@@ -306,14 +306,14 @@ NSString * const NETRequestDidEndNotification = @"NETRequestDidEndNotification";
     [self.dataTask cancel];
 }
 
-- (void)completeWithObject:(id)object response:(NSHTTPURLResponse*)response error:(NSError*)error completion:(void(^)(id object, NSHTTPURLResponse *response, NSError *error))completion {
+- (void)completeWithObject:(id)object data:data response:(NSHTTPURLResponse*)response error:(NSError*)error completion:(void(^)(id object, NSHTTPURLResponse *response, NSError *error))completion {
     
     id theObject = object;
     NSHTTPURLResponse *theResponse = response;
     NSError *theError = error;
     
-    if ([self.intent.provider respondsToSelector:@selector(receivedObject:response:error:intent:)]) {
-        [self.intent.provider receivedObject:&theObject response:&theResponse error:&theError intent:self.intent];
+    if ([self.intent.provider respondsToSelector:@selector(receivedObject:data:response:error:intent:)]) {
+        [self.intent.provider receivedObject:&theObject data:data response:&theResponse error:&theError intent:self.intent];
     }
     
     if ([NSThread isMainThread]) {
