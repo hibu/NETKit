@@ -119,42 +119,33 @@ NSString * const NETRequestDidEndNotification = @"NETRequestDidEndNotification";
 
 - (void)addQueryEntriesFromDictionary:(NSDictionary*)parameters {
     NSMutableArray *mItems = [NSMutableArray new];
-
-    // NSURLQueryItem is new to iOS 8
-    // iOS 8 ?
-    if ([NSURLComponents instancesRespondToSelector:@selector(queryItems)]) {
-        if (self.builder.queryItems.count > 0) [mItems addObjectsFromArray:self.builder.queryItems];
-        [parameters enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-            [self stringifyObject:obj usingBlock:^(NSString *value) {
-                [mItems addObject:[NSURLQueryItem queryItemWithName:key value:value]];
-            }];
-        }];
-        self.builder.queryItems = mItems;
-    } else { // iOS 7
-        [parameters enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-            [self stringifyObject:obj usingBlock:^(NSString *value) {
-                #define kUnescapedCharacters CFSTR("￼=,!$&'()*+;@?\n\"<>#\t :/")
-                NSString *theKey = (__bridge_transfer NSString*)CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)key, NULL, kUnescapedCharacters,kCFStringEncodingUTF8);
-                NSString *theValue = (__bridge_transfer NSString*)CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)value, NULL, kUnescapedCharacters,kCFStringEncodingUTF8);
-                
-                [mItems addObject:@{ theKey : theValue }];
-            }];
-        }];
-        
-        NSMutableString *mString = [NSMutableString string];
-        [mItems enumerateObjectsUsingBlock:^(NSDictionary *item, NSUInteger idx, BOOL *stop) {
-            if (idx > 0) [mString appendString:@"&"];
-            NSString *key = item.allKeys.firstObject;
-            [mString appendString:key];
-            [mString appendString:@"="];
-            [mString appendString:item[key]];
-        }];
-        
-        NSString *query = self.builder.percentEncodedQuery;
-        if (query && query.length > 0) {
-            self.builder.percentEncodedQuery = [query stringByAppendingFormat:@"&%@", mString];
-        } else self.builder.percentEncodedQuery = mString;
+    
+    NSCharacterSet *allowedCharacters = [NETRequest URLQueryParameterPartAllowedCharacterSet];
+    if ([self.intent.provider respondsToSelector:@selector(queryParametersAllowedCharacterSetForIntent:)]) {
+        allowedCharacters = [self.intent.provider queryParametersAllowedCharacterSetForIntent:self.intent];
     }
+
+    [parameters enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        [self stringifyObject:obj usingBlock:^(NSString *value) {
+            NSString *theKey = [key stringByAddingPercentEncodingWithAllowedCharacters:allowedCharacters];
+            NSString *theValue = [value stringByAddingPercentEncodingWithAllowedCharacters:allowedCharacters];
+            [mItems addObject:@{ theKey : theValue }];
+        }];
+    }];
+    
+    NSMutableString *mString = [NSMutableString string];
+    [mItems enumerateObjectsUsingBlock:^(NSDictionary *item, NSUInteger idx, BOOL *stop) {
+        if (idx > 0) [mString appendString:@"&"];
+        NSString *key = item.allKeys.firstObject;
+        [mString appendString:key];
+        [mString appendString:@"="];
+        [mString appendString:item[key]];
+    }];
+    
+    NSString *query = self.builder.percentEncodedQuery;
+    if (query && query.length > 0) {
+        self.builder.percentEncodedQuery = [query stringByAppendingFormat:@"&%@", mString];
+    } else self.builder.percentEncodedQuery = mString;
 }
 
 - (void)addHeaderEntriesFromDictionary:(NSDictionary*)additionalHeaders {
@@ -411,6 +402,16 @@ NSString * const NETRequestDidEndNotification = @"NETRequestDidEndNotification";
     return data;
 }
 
++ (NSCharacterSet*)URLQueryParameterPartAllowedCharacterSet {
+    static NSCharacterSet *set = nil;
+    
+    if (!set) {
+        NSMutableCharacterSet *mset = [[NSCharacterSet URLQueryAllowedCharacterSet] mutableCopy];
+        [mset removeCharactersInString:@"?&="];
+        set = [mset copy];
+    }
+    return set;
+}
 
 @end
 

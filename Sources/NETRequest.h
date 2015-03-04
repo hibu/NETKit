@@ -109,6 +109,8 @@ extern NSString * const NETRequestDidEndNotification;
 
 - (void)receivedObject:(id*)object data:(NSData*)data response:(NSHTTPURLResponse**)response error:(NSError**)error intent:(NETIntent*)intent;
 
+- (NSCharacterSet*)queryParametersAllowedCharacterSetForIntent:(NETIntent*)intent;
+
 @end
 
 
