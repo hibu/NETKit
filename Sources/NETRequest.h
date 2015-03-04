@@ -107,7 +107,7 @@ extern NSString * const NETRequestDidEndNotification;
 // as soon as the response is available.
 - (void)controlPointBlock:(void (^)(dispatch_block_t completionBlk))block intent:(NETIntent*)intent;
 
-- (void)receivedObject:(id*)object data:(NSData*)data response:(NSHTTPURLResponse**)response error:(NSError**)error intent:(NETIntent*)intent;
+- (BOOL)receivedObject:(id*)object data:(NSData*)data response:(NSHTTPURLResponse**)response error:(NSError**)error intent:(NETIntent*)intent;
 
 - (NSCharacterSet*)queryParametersAllowedCharacterSetForIntent:(NETIntent*)intent;
 

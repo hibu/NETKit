@@ -304,7 +304,7 @@ NSString * const NETRequestDidEndNotification = @"NETRequestDidEndNotification";
     NSError *theError = error;
     
     if ([self.intent.provider respondsToSelector:@selector(receivedObject:data:response:error:intent:)]) {
-        [self.intent.provider receivedObject:&theObject data:data response:&theResponse error:&theError intent:self.intent];
+        (void)[self.intent.provider receivedObject:&theObject data:data response:&theResponse error:&theError intent:self.intent];
     }
     
     if ([NSThread isMainThread]) {
