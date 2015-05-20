@@ -103,7 +103,7 @@
 }
     
 + (NSArray*)mimeTypes {
-    return @[@"image/png", @"image/jpg", @"image/jpeg", @"image/*", @"image/gif"];
+    return @[@"image/png", @"image/jpg", @"image/jpeg", @"image/gif", @"image/tiff", @"image/tif", @"image/*"];
 }
 
 + (id)partFromData:(NSData*)data encoding:(NSStringEncoding)encoding {
