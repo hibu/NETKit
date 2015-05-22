@@ -244,14 +244,29 @@ NSString * const NETRequestDidEndNotification = @"NETRequestDidEndNotification";
                                     NSLog(@"****** RESPONSE #%ld status: %ld ******", (unsigned long)self.uid, (long)httpResponse.statusCode);
                                     NSLog(@"URL = %@", self.url);
                                     NSLog(@"Headers = %@", httpResponse.allHeaderFields);
-                                    if (result) NSLog(@"Body = %@", result);
+                                    
+                                    NSString *contentEncoding = httpResponse.allHeaderFields[@"Content-Encoding"];
+                                    NSUInteger size = [httpResponse.allHeaderFields[@"Content-Length"] intValue];
+                                    
+                                    if (size == 0) {
+                                        size = data.length;
+                                    }
+                                    
+                                    NSByteCountFormatter *formatter = [[NSByteCountFormatter alloc] init];
+                                    NSString *sizeString = [formatter stringFromByteCount:size];
+                                    
+                                    if (contentEncoding) {
+                                        sizeString = [NSString stringWithFormat:@"%@ %@", contentEncoding, sizeString];
+                                    }
+                                    
+                                    if (result) NSLog(@"Body (%@) = %@", sizeString, result);
                                     else logRaw = YES;
                                     if ((self.logRawResponseData || logRaw) && data) {
                                         NSString *dataStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
                                         if (dataStr) {
-                                            NSLog(@"Body (raw) = %@", dataStr);
+                                            NSLog(@"Body (raw, %@) = %@", sizeString, dataStr);
                                         } else {
-                                            NSLog(@"Body (raw) = %@", data);
+                                            NSLog(@"Body (raw, %@) = %@", sizeString, data);
                                         }
                                     }
                                     NSLog(@"****** \\RESPONSE #%ld ******", (unsigned long)self.uid);
