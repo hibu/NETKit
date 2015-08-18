@@ -18,6 +18,11 @@
 		BBD56F8D1A5D7A680085D259 /* NETMimePart.m in Sources */ = {isa = PBXBuildFile; fileRef = BBD56F831A5D7A680085D259 /* NETMimePart.m */; };
 		BBD56F8E1A5D7A680085D259 /* NETRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = BBD56F851A5D7A680085D259 /* NETRequest.m */; };
 		BBD56F8F1A5D7A680085D259 /* NETRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = BBD56F851A5D7A680085D259 /* NETRequest.m */; };
+		BBEEA5AD1B8348DD00BE6037 /* NETMimePart.m in Sources */ = {isa = PBXBuildFile; fileRef = BBD56F831A5D7A680085D259 /* NETMimePart.m */; };
+		BBEEA5AE1B8348DD00BE6037 /* NETImageMimePart.m in Sources */ = {isa = PBXBuildFile; fileRef = BBD56F7D1A5D7A680085D259 /* NETImageMimePart.m */; };
+		BBEEA5AF1B8348DD00BE6037 /* NETJSONMimePart.m in Sources */ = {isa = PBXBuildFile; fileRef = BBD56F7F1A5D7A680085D259 /* NETJSONMimePart.m */; };
+		BBEEA5B01B8348DD00BE6037 /* NETRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = BBD56F851A5D7A680085D259 /* NETRequest.m */; };
+		BBEEA5B11B8348DD00BE6037 /* NETMimeMultipart.m in Sources */ = {isa = PBXBuildFile; fileRef = BBD56F811A5D7A680085D259 /* NETMimeMultipart.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,6 +37,15 @@
 
 /* Begin PBXCopyFilesBuildPhase section */
 		BBD56F601A5D7A190085D259 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BBEEA5B31B8348DD00BE6037 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "include/$(PRODUCT_NAME)";
@@ -56,6 +70,7 @@
 		BBD56F831A5D7A680085D259 /* NETMimePart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NETMimePart.m; path = Sources/NETMimePart.m; sourceTree = SOURCE_ROOT; };
 		BBD56F841A5D7A680085D259 /* NETRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NETRequest.h; path = Sources/NETRequest.h; sourceTree = SOURCE_ROOT; };
 		BBD56F851A5D7A680085D259 /* NETRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NETRequest.m; path = Sources/NETRequest.m; sourceTree = SOURCE_ROOT; };
+		BBEEA5B71B8348DD00BE6037 /* libNETKitWatchOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libNETKitWatchOS.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +86,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				BBD56F6E1A5D7A190085D259 /* libNETKit.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BBEEA5B21B8348DD00BE6037 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -91,6 +113,7 @@
 			children = (
 				BBD56F621A5D7A190085D259 /* libNETKit.a */,
 				BBD56F6D1A5D7A190085D259 /* NETKitTests.xctest */,
+				BBEEA5B71B8348DD00BE6037 /* libNETKitWatchOS.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -166,6 +189,23 @@
 			productReference = BBD56F6D1A5D7A190085D259 /* NETKitTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		BBEEA5AB1B8348DD00BE6037 /* NETKitWatchOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BBEEA5B41B8348DD00BE6037 /* Build configuration list for PBXNativeTarget "NETKitWatchOS" */;
+			buildPhases = (
+				BBEEA5AC1B8348DD00BE6037 /* Sources */,
+				BBEEA5B21B8348DD00BE6037 /* Frameworks */,
+				BBEEA5B31B8348DD00BE6037 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = NETKitWatchOS;
+			productName = NETKit;
+			productReference = BBEEA5B71B8348DD00BE6037 /* libNETKitWatchOS.a */;
+			productType = "com.apple.product-type.library.static";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -196,6 +236,7 @@
 			projectRoot = "";
 			targets = (
 				BBD56F611A5D7A190085D259 /* NETKit */,
+				BBEEA5AB1B8348DD00BE6037 /* NETKitWatchOS */,
 				BBD56F6C1A5D7A190085D259 /* NETKitTests */,
 			);
 		};
@@ -233,6 +274,18 @@
 				BBD56F8D1A5D7A680085D259 /* NETMimePart.m in Sources */,
 				BBD56F8F1A5D7A680085D259 /* NETRequest.m in Sources */,
 				BBD56F8B1A5D7A680085D259 /* NETMimeMultipart.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BBEEA5AC1B8348DD00BE6037 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BBEEA5AD1B8348DD00BE6037 /* NETMimePart.m in Sources */,
+				BBEEA5AE1B8348DD00BE6037 /* NETImageMimePart.m in Sources */,
+				BBEEA5AF1B8348DD00BE6037 /* NETJSONMimePart.m in Sources */,
+				BBEEA5B01B8348DD00BE6037 /* NETRequest.m in Sources */,
+				BBEEA5B11B8348DD00BE6037 /* NETMimeMultipart.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -376,6 +429,29 @@
 			};
 			name = Release;
 		};
+		BBEEA5B51B8348DD00BE6037 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		BBEEA5B61B8348DD00BE6037 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -402,6 +478,15 @@
 			buildConfigurations = (
 				BBD56F7A1A5D7A190085D259 /* Debug */,
 				BBD56F7B1A5D7A190085D259 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BBEEA5B41B8348DD00BE6037 /* Build configuration list for PBXNativeTarget "NETKitWatchOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BBEEA5B51B8348DD00BE6037 /* Debug */,
+				BBEEA5B61B8348DD00BE6037 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
