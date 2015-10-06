@@ -207,87 +207,95 @@ NSString * const NETRequestDidEndNotification = @"NETRequestDidEndNotification";
                         });
                     }
                     
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [[NSNotificationCenter defaultCenter] postNotificationName:NETRequestDidStartNotification object:self];
-                    });
-                    
-                    self.dataTask = [self.session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-                        
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            [[NSNotificationCenter defaultCenter] postNotificationName:NETRequestDidEndNotification object:self];
-                        });
-                        
-                        NSHTTPURLResponse *httpResponse = (id)response;
-                        
-                        if (completionBlk) {
-                            completionBlk();
-                        }
-                        
-                        if (self.cancelled || self.dataTask.state == NSURLSessionTaskStateCanceling) {
-                            NSError *cancelError = [NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorCancelled userInfo:nil];
-                            [self completeWithObject:nil data:nil response:nil error:cancelError completion:completion];
-                            return;
-                        }
-                        
-                        // We dispatch async to not block the networking serial queue
-                        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                            id result = nil;
+                    @try {
+                        self.dataTask = [self.session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
                             
-                            if (!error && httpResponse.statusCode >= 200 && httpResponse.statusCode <= 299) {
-                                result = [self convertData:data contentType:httpResponse.allHeaderFields[@"Content-Type"]];
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                [[NSNotificationCenter defaultCenter] postNotificationName:NETRequestDidEndNotification object:self];
+                            });
+                            
+                            NSHTTPURLResponse *httpResponse = (id)response;
+                            
+                            if (completionBlk) {
+                                completionBlk();
                             }
                             
-                            if (!self.isQuiet) {
-                                dispatch_async(dispatch_get_main_queue(), ^{
-                                    BOOL logRaw = NO;
-                                    NSLog(@"\n");
-                                    NSLog(@"****** RESPONSE #%ld status: %ld ******", (unsigned long)self.uid, (long)httpResponse.statusCode);
-                                    NSLog(@"URL = %@", self.url);
-                                    NSLog(@"Headers = %@", httpResponse.allHeaderFields);
-                                    
-                                    NSString *contentEncoding = httpResponse.allHeaderFields[@"Content-Encoding"];
-                                    NSUInteger size = [httpResponse.allHeaderFields[@"Content-Length"] intValue];
-                                    
-                                    if (size == 0) {
-                                        size = data.length;
-                                    }
-                                    
-                                    NSByteCountFormatter *formatter = [[NSByteCountFormatter alloc] init];
-                                    NSString *sizeString = [formatter stringFromByteCount:size];
-                                    
-                                    if (contentEncoding) {
-                                        sizeString = [NSString stringWithFormat:@"%@ %@", contentEncoding, sizeString];
-                                    }
-                                    
-                                    if (result) NSLog(@"Body (%@) = %@", sizeString, result);
-                                    else logRaw = YES;
-                                    if ((self.logRawResponseData || logRaw) && data) {
-                                        NSString *dataStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-                                        if (dataStr) {
-                                            NSLog(@"Body (raw, %@) = %@", sizeString, dataStr);
-                                        } else {
-                                            NSLog(@"Body (raw, %@) = %@", sizeString, data);
+                            if (self.cancelled || self.dataTask.state == NSURLSessionTaskStateCanceling) {
+                                NSError *cancelError = [NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorCancelled userInfo:nil];
+                                [self completeWithObject:nil data:nil response:nil error:cancelError completion:completion];
+                                return;
+                            }
+                            
+                            // We dispatch async to not block the networking serial queue
+                            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                                id result = nil;
+                                
+                                if (!error && httpResponse.statusCode >= 200 && httpResponse.statusCode <= 299) {
+                                    result = [self convertData:data contentType:httpResponse.allHeaderFields[@"Content-Type"]];
+                                }
+                                
+                                if (!self.isQuiet) {
+                                    dispatch_async(dispatch_get_main_queue(), ^{
+                                        BOOL logRaw = NO;
+                                        NSLog(@"\n");
+                                        NSLog(@"****** RESPONSE #%ld status: %ld ******", (unsigned long)self.uid, (long)httpResponse.statusCode);
+                                        NSLog(@"URL = %@", self.url);
+                                        NSLog(@"Headers = %@", httpResponse.allHeaderFields);
+                                        
+                                        NSString *contentEncoding = httpResponse.allHeaderFields[@"Content-Encoding"];
+                                        NSUInteger size = [httpResponse.allHeaderFields[@"Content-Length"] intValue];
+                                        
+                                        if (size == 0) {
+                                            size = data.length;
                                         }
-                                    }
-                                    NSLog(@"****** \\RESPONSE #%ld ******", (unsigned long)self.uid);
-                                    NSLog(@"\n");
-                                });
-                            }
-                            
-                            self.executing = NO;
-                            self.dataTask = nil;
-                            
-                            [self completeWithObject:result data:data response:httpResponse error:error completion:completion];
-                        });
-                    }];
+                                        
+                                        NSByteCountFormatter *formatter = [[NSByteCountFormatter alloc] init];
+                                        NSString *sizeString = [formatter stringFromByteCount:size];
+                                        
+                                        if (contentEncoding) {
+                                            sizeString = [NSString stringWithFormat:@"%@ %@", contentEncoding, sizeString];
+                                        }
+                                        
+                                        if (result) NSLog(@"Body (%@) = %@", sizeString, result);
+                                        else logRaw = YES;
+                                        if ((self.logRawResponseData || logRaw) && data) {
+                                            NSString *dataStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                                            if (dataStr) {
+                                                NSLog(@"Body (raw, %@) = %@", sizeString, dataStr);
+                                            } else {
+                                                NSLog(@"Body (raw, %@) = %@", sizeString, data);
+                                            }
+                                        }
+                                        NSLog(@"****** \\RESPONSE #%ld ******", (unsigned long)self.uid);
+                                        NSLog(@"\n");
+                                    });
+                                }
+                                
+                                self.executing = NO;
+                                self.dataTask = nil;
+                                
+                                [self completeWithObject:result data:data response:httpResponse error:error completion:completion];
+                            });
+                        }];
+
+                    }
+                    @catch (NSException *exception) {
+                        // session is invalid, cannot create a data task.
+                        self.dataTask = nil;
+                    }
                     
                     if (!self.dataTask) {
                         NSError *cancelError = [NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorCancelled userInfo:nil];
                         [self completeWithObject:nil data:nil response:nil error:cancelError completion:completion];
                         return;
+                    } else {
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [[NSNotificationCenter defaultCenter] postNotificationName:NETRequestDidStartNotification object:self];
+                        });
+
+                        [self.dataTask resume];
                     }
-                    
-                    [self.dataTask resume];
+
                 }];
             });
         };
