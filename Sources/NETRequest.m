@@ -241,6 +241,9 @@ NSString * const NETRequestDidEndNotification = @"NETRequestDidEndNotification";
                                         NSLog(@"****** RESPONSE #%ld status: %ld ******", (unsigned long)self.uid, (long)httpResponse.statusCode);
                                         NSLog(@"URL = %@", self.url);
                                         NSLog(@"Headers = %@", httpResponse.allHeaderFields);
+                                        if (error) {
+                                            NSLog(@"Error = %@", error);
+                                        }
                                         
                                         NSString *contentEncoding = httpResponse.allHeaderFields[@"Content-Encoding"];
                                         NSUInteger size = [httpResponse.allHeaderFields[@"Content-Length"] intValue];
