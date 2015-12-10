@@ -285,6 +285,9 @@ NSString * const NETRequestDidEndNotification = @"NETRequestDidEndNotification";
                     @catch (NSException *exception) {
                         // session is invalid, cannot create a data task.
                         self.dataTask = nil;
+                        if (completionBlk) {
+                            completionBlk();
+                        }
                     }
                     
                     if (!self.dataTask) {
