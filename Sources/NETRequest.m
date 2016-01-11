@@ -337,6 +337,8 @@ NSString * const NETRequestDidEndNotification = @"NETRequestDidEndNotification";
 
 - (void)completeWithObject:(id)object data:data response:(NSHTTPURLResponse*)response error:(NSError*)error completion:(void(^)(id object, NSHTTPURLResponse *response, NSError *error))completion {
     
+    NSAssert(completion != nil, @"completion cannot be nil");
+    
     id theObject = object;
     NSHTTPURLResponse *theResponse = response;
     NSError *theError = error;
